@@ -28,33 +28,36 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
   /**************************************************************************** */
 
-  app.get("/filteredimage", async (req, res) => {
-    const imageUrl = req.query.image_url;
+  app.get(
+    "/filteredimage",
+    async (req: express.Request, res: express.Response) => {
+      const imageUrl = req.query.image_url;
 
-    // check if imageUrl is valid
-    if (!imageUrl) {
-      return res.status(400).send({
-        message: "Please provide the image url to process the image",
-      });
-    }
+      // check if imageUrl is valid
+      if (!imageUrl) {
+        return res.status(400).send({
+          message: "Please provide the image url to process the image",
+        });
+      }
 
-    try {
-      console;
-      const getFilteredImageFromURL = await filterImageFromURL(imageUrl);
-      res.sendFile(getFilteredImageFromURL, () =>
-        deleteLocalFiles([getFilteredImageFromURL])
-      );
-    } catch (error) {
-      res
-        .sendStatus(422)
-        .send("We are unable to process the image you provided with the url");
+      try {
+        console;
+        const getFilteredImageFromURL = await filterImageFromURL(imageUrl);
+        res.sendFile(getFilteredImageFromURL, () =>
+          deleteLocalFiles([getFilteredImageFromURL])
+        );
+      } catch (error) {
+        res
+          .sendStatus(422)
+          .send("We are unable to process the image you provided with the url");
+      }
     }
-  });
+  );
   //! END @TODO1
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get("/", async (req, res) => {
+  app.get("/", async (req: express.Request, res: express.Response) => {
     res.send("try GET /filteredimage?image_url={{}}");
   });
 
